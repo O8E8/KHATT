@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>KHATT CART</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+
+body{
+margin:0;
+font-family:Inter;
+background:#0a0a0a;
+color:white;
+}
+
+/* HEADER */
+.header{
+padding:20px;
+text-align:center;
+color:#d4af37;
+font-size:28px;
+letter-spacing:3px;
+border-bottom:1px solid rgba(212,175,55,0.2);
+}
+
+/* CART ITEMS */
+.container{
+padding:30px;
+}
+
+.item{
+display:flex;
+gap:15px;
+background:rgba(255,255,255,0.05);
+padding:15px;
+margin-bottom:15px;
+border-radius:12px;
+align-items:center;
+}
+
+.item img{
+width:80px;
+height:80px;
+object-fit:cover;
+border-radius:10px;
+}
+
+.item h3{
+margin:0;
+font-size:16px;
+}
+
+.price{
+color:#d4af37;
+margin-top:5px;
+}
+
+.remove{
+margin-left:auto;
+background:red;
+color:white;
+border:none;
+padding:8px 12px;
+border-radius:8px;
+cursor:pointer;
+}
+
+/* TOTAL */
+.total{
+text-align:center;
+font-size:22px;
+margin-top:30px;
+color:#d4af37;
+}
+
+/* CHECKOUT */
+.checkout{
+display:block;
+width:90%;
+margin:30px auto;
+padding:15px;
+background:#d4af37;
+color:black;
+text-align:center;
+border-radius:12px;
+font-weight:bold;
+cursor:pointer;
+text-decoration:none;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="header">YOUR CART</div>
+
+<div class="container" id="cartItems"></div>
+
+<div class="total" id="total"></div>
+
+<a class="checkout" onclick="checkout()">CHECKOUT VIA WHATSAPP</a>
+
+<script>
+
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+function renderCart(){
+
+let container = document.getElementById("cartItems");
+container.innerHTML = "";
+
+let total = 0;
+
+cart.forEach((p, index) => {
+
+total += Number(p.price);
+
+container.innerHTML += `
+<div class="item">
+<img src="${p.image}">
+<div>
+<h3>${p.name}</h3>
+<div class="price">${p.price} EGP</div>
+</div>
+
+<button class="remove" onclick="removeItem(${index})">X</button>
+</div>
+`;
+
+});
+
+document.getElementById("total").innerText = "TOTAL: " + total + " EGP";
+
+}
+
+function removeItem(index){
+cart.splice(index,1);
+localStorage.setItem("cart", JSON.stringify(cart));
+renderCart();
+}
+
+function checkout(){
+
+let msg = "🛒 ORDER DETAILS:%0A";
+
+cart.forEach((p,i)=>{
+msg += `${i+1}. ${p.name} - ${p.price} EGP%0A`;
+});
+
+window.open(`https://wa.me/201276136180?text=${msg}`);
+
+}
+
+renderCart();
+
+</script>
+
+</body>
+  </html>
