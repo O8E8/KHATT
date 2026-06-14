@@ -6,110 +6,32 @@
 
 <title>KHATT STORE</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
 
-/* RESET */
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
-
 body{
-font-family:'Inter',sans-serif;
+margin:0;
+font-family:Inter;
+background:#0a0a0a;
 color:white;
-
-/* LUXURY BACKGROUND */
-background:
-linear-gradient(rgba(0,0,0,.85),rgba(0,0,0,.85)),
-url('1781355561879.png');
-
-background-size:cover;
-background-position:center;
-background-attachment:fixed;
-overflow-x:hidden;
 }
 
-/* OVERLAY EXTRA LAYER */
-body::before{
-content:"";
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.4);
-z-index:-1;
-}
-
-/* INTRO */
-.intro{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100vh;
-background:black;
+/* HEADER */
+header{
 display:flex;
-justify-content:center;
-align-items:center;
-z-index:9999;
-animation:fadeOut 2.5s ease forwards;
-animation-delay:2s;
+justify-content:space-between;
+padding:20px 40px;
+border-bottom:1px solid rgba(212,175,55,0.2);
 }
 
-.intro img{
-width:200px;
-filter:drop-shadow(0 0 20px #d4af37);
-animation:pop 1s ease;
-}
-
-@keyframes pop{
-0%{transform:scale(0.5);opacity:0}
-70%{transform:scale(1.1)}
-100%{transform:scale(1)}
-}
-
-@keyframes fadeOut{
-to{opacity:0;visibility:hidden}
-}
-
-/* HERO */
-.hero{
-text-align:center;
-padding:120px 20px 60px;
-}
-
-.hero h1{
-font-size:70px;
+.logo{
 color:#d4af37;
-letter-spacing:6px;
-font-family:'Cormorant Garamond',serif;
-}
-
-.hero p{
-color:#ccc;
+font-weight:700;
 letter-spacing:3px;
-margin-top:10px;
 }
 
-/* CART */
-.cart{
-position:fixed;
-top:20px;
-right:20px;
-z-index:999;
-}
-
-.cart a{
-color:#d4af37;
-text-decoration:none;
-font-weight:bold;
-}
-
-/* PRODUCTS */
+/* GRID */
 .products{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
@@ -117,41 +39,46 @@ gap:20px;
 padding:40px;
 }
 
+/* CARD */
 .card{
-background:rgba(0,0,0,0.6);
+background:#111;
 border:1px solid rgba(212,175,55,0.4);
-padding:15px;
 border-radius:12px;
-transition:.3s;
-backdrop-filter:blur(8px);
+overflow:hidden;
+transition:0.3s;
 }
 
 .card:hover{
-transform:translateY(-8px);
-border:1px solid #d4af37;
+transform:translateY(-5px);
+border-color:#d4af37;
 }
 
-.card h3{
-color:#fff;
+.card img{
+width:100%;
+height:250px;
+object-fit:cover;
 }
 
-.buy{
+.card-content{
+padding:15px;
+}
+
+.price{
+color:#d4af37;
+font-weight:bold;
+}
+
+/* BUTTON */
+.btn{
 display:block;
 margin-top:10px;
 padding:10px;
+text-align:center;
 background:#d4af37;
 color:black;
-text-align:center;
-border-radius:8px;
 text-decoration:none;
-}
-
-/* FOOTER */
-footer{
-text-align:center;
-padding:30px;
-color:#777;
-margin-top:40px;
+border-radius:8px;
+font-weight:600;
 }
 
 </style>
@@ -159,55 +86,60 @@ margin-top:40px;
 
 <body>
 
-<!-- INTRO -->
-<div class="intro">
-    <img src="Picsart_26-06-13_12-52-16-758.png">
-</div>
+<header>
+<div class="logo">KHATT STORE</div>
+</header>
 
-<!-- CART -->
-<div class="cart">
-🛒 <a href="cart.html">Cart (<span id="count">0</span>)</a>
-</div>
+<div class="products" id="products"></div>
 
-<!-- HERO -->
-<div class="hero">
-<h1>KHATT</h1>
-<p>Luxury Streetwear</p>
-</div>
+<script type="module">
 
-<!-- PRODUCTS -->
-<section class="products">
+// Firebase SDK
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
+// YOUR FIREBASE CONFIG
+const firebaseConfig = {
+  apiKey: "AIzaSyCo89iKfkZzWSxfPgcg6i-3AnUaeD9Qdvk",
+  authDomain: "khatt-store-15e5c.firebaseapp.com",
+  projectId: "khatt-store-15e5c",
+  storageBucket: "khatt-store-15e5c.firebasestorage.app",
+  messagingSenderId: "960409478795",
+  appId: "1:960409478795:web:aa8491cc9be483991c968e"
+};
+
+// INIT FIREBASE
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// LOAD PRODUCTS
+async function loadProducts(){
+
+const querySnapshot = await getDocs(collection(db, "products"));
+
+const container = document.getElementById("products");
+
+querySnapshot.forEach((doc) => {
+
+let p = doc.data();
+
+container.innerHTML += `
 <div class="card">
-<h3>Oversized Tee</h3>
-<p>499 EGP</p>
-<a class="buy" href="Oversized.html">View Product</a>
+<img src="${p.image}">
+<div class="card-content">
+<h3>${p.name}</h3>
+<p class="price">${p.price} EGP</p>
+<a class="btn" href="product.html?id=${doc.id}">View Product</a>
 </div>
-
-<div class="card">
-<h3>Premium Tee</h3>
-<p>499 EGP</p>
-<a class="buy" href="Oversized.html">View Product</a>
 </div>
+`;
 
-<div class="card">
-<h3>Essential Tee</h3>
-<p>499 EGP</p>
-<a class="buy" href="Oversized.html">View Product</a>
-</div>
+});
 
-</section>
-
-<footer>
-© 2026 KHATT - Luxury Streetwear
-</footer>
-
-<script>
-function updateCart(){
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
-document.getElementById("count").innerText = cart.length;
 }
-updateCart();
+
+loadProducts();
+
 </script>
 
 </body>
