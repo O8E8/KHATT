@@ -17,17 +17,31 @@ padding:0;
 box-sizing:border-box;
 }
 
-html,body{
-width:100%;
-overflow-x:hidden;
+body{
 font-family:'Inter',sans-serif;
+color:white;
+
+/* LUXURY BACKGROUND */
 background:
-linear-gradient(rgba(0,0,0,.8),rgba(0,0,0,.8)),
+linear-gradient(rgba(0,0,0,.85),rgba(0,0,0,.85)),
 url('1781355561879.png');
+
 background-size:cover;
 background-position:center;
 background-attachment:fixed;
-color:white;
+overflow-x:hidden;
+}
+
+/* OVERLAY EXTRA LAYER */
+body::before{
+content:"";
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.4);
+z-index:-1;
 }
 
 /* INTRO */
@@ -37,7 +51,7 @@ top:0;
 left:0;
 width:100%;
 height:100vh;
-background:#000;
+background:black;
 display:flex;
 justify-content:center;
 align-items:center;
@@ -46,178 +60,90 @@ animation:fadeOut 2.5s ease forwards;
 animation-delay:2s;
 }
 
-.intro-logo{
-width:220px;
-filter: drop-shadow(0 0 25px rgba(212,175,55,0.6));
-animation:pop 1.2s ease;
+.intro img{
+width:200px;
+filter:drop-shadow(0 0 20px #d4af37);
+animation:pop 1s ease;
 }
 
 @keyframes pop{
-0%{transform:scale(0.5);opacity:0;}
-70%{transform:scale(1.1);}
-100%{transform:scale(1);}
+0%{transform:scale(0.5);opacity:0}
+70%{transform:scale(1.1)}
+100%{transform:scale(1)}
 }
 
 @keyframes fadeOut{
-to{opacity:0;visibility:hidden;}
+to{opacity:0;visibility:hidden}
 }
 
 /* HERO */
 .hero{
-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
 text-align:center;
+padding:120px 20px 60px;
 }
 
 .hero h1{
-font-size:5rem;
-font-family:'Cormorant Garamond',serif;
+font-size:70px;
 color:#d4af37;
-letter-spacing:8px;
-animation:fadeUp 1.5s ease;
+letter-spacing:6px;
+font-family:'Cormorant Garamond',serif;
 }
 
 .hero p{
 color:#ccc;
 letter-spacing:3px;
-animation:fadeUp 2s ease;
+margin-top:10px;
 }
 
-@keyframes fadeUp{
-from{opacity:0;transform:translateY(20px);}
-to{opacity:1;transform:translateY(0);}
+/* CART */
+.cart{
+position:fixed;
+top:20px;
+right:20px;
+z-index:999;
 }
 
-/* BUTTONS */
-.btn{
-margin-top:20px;
-display:inline-block;
-padding:12px 30px;
-border:1px solid #d4af37;
+.cart a{
 color:#d4af37;
 text-decoration:none;
-transition:.3s;
-border-radius:30px;
-}
-
-.btn:hover{
-background:#d4af37;
-color:#000;
-}
-
-/* SOCIAL */
-.social{
-text-align:center;
-margin-top:20px;
-}
-
-.social a{
-color:#d4af37;
-margin:0 10px;
-text-decoration:none;
+font-weight:bold;
 }
 
 /* PRODUCTS */
-.section{
-padding:80px 10%;
-}
-
-.title{
-text-align:center;
-font-size:2.5rem;
-color:#d4af37;
-margin-bottom:50px;
-font-family:'Cormorant Garamond',serif;
-}
-
 .products{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-gap:25px;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
+padding:40px;
 }
 
-/* PREMIUM CARD */
 .card{
-background:rgba(10,10,10,0.6);
-backdrop-filter:blur(10px);
-border:1px solid rgba(212,175,55,0.2);
-border-radius:18px;
-overflow:hidden;
-transition:.4s;
-animation:fadeUp 1s ease;
+background:rgba(0,0,0,0.6);
+border:1px solid rgba(212,175,55,0.4);
+padding:15px;
+border-radius:12px;
+transition:.3s;
+backdrop-filter:blur(8px);
 }
 
 .card:hover{
-transform:translateY(-10px);
-border:1px solid rgba(212,175,55,0.6);
-}
-
-.card img{
-width:100%;
-height:280px;
-object-fit:cover;
-}
-
-.card-info{
-padding:15px;
-}
-
-.price{
-color:#d4af37;
-}
-
-/* ORDER BUTTON */
-.buy-btn{
-display:block;
-margin-top:10px;
-padding:10px;
-text-align:center;
-background:#d4af37;
-color:#000;
-border-radius:10px;
-cursor:pointer;
-}
-
-/* MODAL */
-.modal{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,0.8);
-display:none;
-justify-content:center;
-align-items:center;
-z-index:99999;
-}
-
-.modal-box{
-background:#111;
-padding:20px;
-border-radius:12px;
-width:300px;
+transform:translateY(-8px);
 border:1px solid #d4af37;
 }
 
-.modal-box input{
-width:100%;
-margin:10px 0;
-padding:10px;
-border:none;
-border-radius:8px;
+.card h3{
+color:#fff;
 }
 
-.modal-box button{
-width:100%;
+.buy{
+display:block;
+margin-top:10px;
 padding:10px;
-background:#25D366;
-border:none;
-color:white;
+background:#d4af37;
+color:black;
+text-align:center;
 border-radius:8px;
-cursor:pointer;
+text-decoration:none;
 }
 
 /* FOOTER */
@@ -225,7 +151,7 @@ footer{
 text-align:center;
 padding:30px;
 color:#777;
-margin-top:50px;
+margin-top:40px;
 }
 
 </style>
@@ -235,102 +161,54 @@ margin-top:50px;
 
 <!-- INTRO -->
 <div class="intro">
-    <img src="Picsart_26-06-13_12-52-16-758.png" class="intro-logo">
+    <img src="Picsart_26-06-13_12-52-16-758.png">
+</div>
+
+<!-- CART -->
+<div class="cart">
+🛒 <a href="cart.html">Cart (<span id="count">0</span>)</a>
 </div>
 
 <!-- HERO -->
-<section class="hero">
-<div>
+<div class="hero">
 <h1>KHATT</h1>
 <p>Luxury Streetwear</p>
-
-<a href="#shop" class="btn">Shop Now</a>
-
-<div class="social">
-<a href="https://www.instagram.com/khatt_egy?igsh=MWxlanl0cHJnbWJ3cA==" target="_blank">Instagram</a>
 </div>
-</div>
-</section>
 
 <!-- PRODUCTS -->
-<section class="section" id="shop">
-<h2 class="title">New Collection</h2>
-
-<div class="products">
+<section class="products">
 
 <div class="card">
-<img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab">
-<div class="card-info">
 <h3>Oversized Tee</h3>
-<p class="price">499 EGP</p>
-<div class="buy-btn" onclick="openOrder('Oversized Tee')">Buy Now</div>
-</div>
+<p>499 EGP</p>
+<a class="buy" href="oversized.html">View Product</a>
 </div>
 
 <div class="card">
-<img src="https://images.unsplash.com/photo-1503341504253-dff4815485f1">
-<div class="card-info">
 <h3>Premium Tee</h3>
-<p class="price">499 EGP</p>
-<div class="buy-btn" onclick="openOrder('Premium Tee')">Buy Now</div>
-</div>
+<p>499 EGP</p>
+<a class="buy" href="premium.html">View Product</a>
 </div>
 
 <div class="card">
-<img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f">
-<div class="card-info">
 <h3>Essential Tee</h3>
-<p class="price">499 EGP</p>
-<div class="buy-btn" onclick="openOrder('Essential Tee')">Buy Now</div>
-</div>
+<p>499 EGP</p>
+<a class="buy" href="essential.html">View Product</a>
 </div>
 
-</div>
 </section>
 
-<!-- ORDER MODAL -->
-<div class="modal" id="orderModal">
-<div class="modal-box">
-<h3 style="color:#d4af37;">Order Info</h3>
-
-<input type="text" id="name" placeholder="Your Name">
-<input type="text" id="phone" placeholder="Phone">
-<input type="text" id="address" placeholder="Address">
-
-<button onclick="sendOrder()">Send Order</button>
-</div>
-</div>
-
 <footer>
-© 2026 KHATT
+© 2026 KHATT - Luxury Streetwear
 </footer>
 
 <script>
-
-let selectedProduct = "";
-
-function openOrder(product){
-selectedProduct = product;
-document.getElementById("orderModal").style.display="flex";
+function updateCart(){
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+document.getElementById("count").innerText = cart.length;
 }
-
-function sendOrder(){
-let name = document.getElementById("name").value;
-let phone = document.getElementById("phone").value;
-let address = document.getElementById("address").value;
-
-let msg = `New Order:%0AProduct: ${selectedProduct}%0AName: ${name}%0APhone: ${phone}%0AAddress: ${address}`;
-
-window.open(`https://wa.me/201276136180?text=${msg}`, "_blank");
-}
-
-window.onclick = function(e){
-if(e.target.id === "orderModal"){
-document.getElementById("orderModal").style.display="none";
-}
-}
-
+updateCart();
 </script>
 
 </body>
-  </html>
+</html>
