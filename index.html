@@ -32,7 +32,7 @@ z-index:-2;
 filter:brightness(0.35) contrast(1.1);
 }
 
-/* DARK OVERLAY */
+/* OVERLAY */
 .overlay{
 position:fixed;
 top:0;
@@ -62,12 +62,6 @@ font-size:60px;
 letter-spacing:12px;
 color:#d4af37;
 font-family:'Cormorant Garamond',serif;
-animation:zoom 1.2s ease;
-}
-
-@keyframes zoom{
-from{transform:scale(0.6);opacity:0;}
-to{transform:scale(1);opacity:1;}
 }
 
 @keyframes fadeOut{
@@ -89,7 +83,6 @@ font-size:90px;
 letter-spacing:14px;
 color:#d4af37;
 font-family:'Cormorant Garamond',serif;
-text-shadow:0 0 25px rgba(212,175,55,0.2);
 }
 
 .hero p{
@@ -99,7 +92,7 @@ margin-top:10px;
 font-size:14px;
 }
 
-/* SECTION */
+/* PRODUCTS */
 .products{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
@@ -120,19 +113,12 @@ transition:0.5s;
 .card:hover{
 transform:translateY(-12px) scale(1.02);
 border-color:#d4af37;
-box-shadow:0 10px 40px rgba(0,0,0,0.6);
 }
 
 .card img{
 width:100%;
 height:320px;
 object-fit:cover;
-transition:0.5s;
-}
-
-.card:hover img{
-transform:scale(1.08);
-filter:brightness(1.1);
 }
 
 .card-content{
@@ -142,13 +128,12 @@ padding:18px;
 .card h3{
 font-family:'Cormorant Garamond',serif;
 font-size:22px;
-margin-bottom:5px;
 }
 
 .price{
 color:#d4af37;
 font-weight:bold;
-margin-bottom:10px;
+margin:10px 0;
 }
 
 .btn{
@@ -160,7 +145,8 @@ text-align:center;
 border-radius:12px;
 text-decoration:none;
 font-weight:700;
-transition:0.3s;
+margin-top:8px;
+cursor:pointer;
 }
 
 .btn:hover{
@@ -168,26 +154,8 @@ background:white;
 color:black;
 }
 
-</style>
-</head>
-
-<body>
-
-<!-- BACKGROUND -->
-<div class="bg"></div>
-<div class="overlay"></div>
-
-<!-- INTRO -->
-<div class="intro">
-<h1>KHATT</h1>
-</div>
-
-<!-- HERO -->
-<section class="hero">
-<h1>KHATT</h1>
-<p>LUXURY STREETWEAR EXPERIENCE</p>
-</section>
-<div id="cartIcon" style="
+/* CART ICON */
+#cartIcon{
 position:fixed;
 top:20px;
 right:20px;
@@ -198,9 +166,30 @@ border-radius:50px;
 cursor:pointer;
 font-weight:bold;
 z-index:9999;
-">
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="bg"></div>
+<div class="overlay"></div>
+
+<div class="intro">
+<h1>KHATT</h1>
+</div>
+
+<section class="hero">
+<h1>KHATT</h1>
+<p>LUXURY STREETWEAR EXPERIENCE</p>
+</section>
+
+<!-- CART -->
+<div id="cartIcon">
 🛒 <span id="cartCount">0</span>
 </div>
+
 <!-- PRODUCTS -->
 <div class="products" id="products"></div>
 
@@ -221,6 +210,26 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+function updateCartCount(){
+document.getElementById("cartCount").innerText = cart.length;
+}
+
+updateCartCount();
+
+function addToCart(name, price, image){
+
+cart.push({name, price, image});
+localStorage.setItem("cart", JSON.stringify(cart));
+updateCartCount();
+
+}
+
+document.getElementById("cartIcon").onclick = function(){
+window.location.href = "cart.html";
+};
+
 async function loadProducts(){
 
 const snap = await getDocs(collection(db, "Products"));
@@ -237,13 +246,15 @@ container.innerHTML += `
 <div class="card-content">
 <h3>${p.name}</h3>
 <p class="price">${p.price} EGP</p>
-<button class="btn" onclick="addToCart('${p.name}','${p.price}','${p.image}')">
+
+<div class="btn" onclick="addToCart('${p.name}','${p.price}','${p.image}')">
 ADD TO CART
-</button>
+</div>
 
 <a class="btn" href="product.html?id=${doc.id}">
 BUY NOW
 </a>
+
 </div>
 </div>
 `;
@@ -255,48 +266,6 @@ BUY NOW
 loadProducts();
 
 </script>
-<script>
 
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-// تحديث العداد
-function updateCartCount(){
-document.getElementById("cartCount").innerText = cart.length;
-}
-
-// إضافة للـ cart
-function addToCart(name, price, image){
-
-cart.push({
-name,
-price,
-image
-});
-
-localStorage.setItem("cart", JSON.stringify(cart));
-updateCartCount();
-
-alert("Added to cart ✔");
-
-}
-
-// فتح الكارت (عرض بسيط)
-document.getElementById("cartIcon").onclick = function(){
-
-let total = 0;
-let items = "";
-
-cart.forEach((p, i) => {
-total += Number(p.price);
-items += `\n${i+1}. ${p.name} - ${p.price} EGP`;
-});
-
-alert("🛒 CART ITEMS:\n" + items + "\n\nTOTAL: " + total + " EGP");
-
-}
-
-updateCartCount();
-
-</script>
 </body>
 </html>
