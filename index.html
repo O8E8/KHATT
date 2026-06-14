@@ -187,7 +187,20 @@ color:black;
 <h1>KHATT</h1>
 <p>LUXURY STREETWEAR EXPERIENCE</p>
 </section>
-
+<div id="cartIcon" style="
+position:fixed;
+top:20px;
+right:20px;
+background:#d4af37;
+color:black;
+padding:10px 15px;
+border-radius:50px;
+cursor:pointer;
+font-weight:bold;
+z-index:9999;
+">
+🛒 <span id="cartCount">0</span>
+</div>
 <!-- PRODUCTS -->
 <div class="products" id="products"></div>
 
@@ -224,7 +237,13 @@ container.innerHTML += `
 <div class="card-content">
 <h3>${p.name}</h3>
 <p class="price">${p.price} EGP</p>
-<a class="btn" href="#">BUY NOW</a>
+<button class="btn" onclick="addToCart('${p.name}','${p.price}','${p.image}')">
+ADD TO CART
+</button>
+
+<a class="btn" href="product.html?id=${doc.id}">
+BUY NOW
+</a>
 </div>
 </div>
 `;
@@ -236,6 +255,48 @@ container.innerHTML += `
 loadProducts();
 
 </script>
+<script>
 
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+// تحديث العداد
+function updateCartCount(){
+document.getElementById("cartCount").innerText = cart.length;
+}
+
+// إضافة للـ cart
+function addToCart(name, price, image){
+
+cart.push({
+name,
+price,
+image
+});
+
+localStorage.setItem("cart", JSON.stringify(cart));
+updateCartCount();
+
+alert("Added to cart ✔");
+
+}
+
+// فتح الكارت (عرض بسيط)
+document.getElementById("cartIcon").onclick = function(){
+
+let total = 0;
+let items = "";
+
+cart.forEach((p, i) => {
+total += Number(p.price);
+items += `\n${i+1}. ${p.name} - ${p.price} EGP`;
+});
+
+alert("🛒 CART ITEMS:\n" + items + "\n\nTOTAL: " + total + " EGP");
+
+}
+
+updateCartCount();
+
+</script>
 </body>
 </html>
