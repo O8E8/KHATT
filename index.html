@@ -6,79 +6,166 @@
 
 <title>KHATT STORE</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
 
+/* RESET */
+*{margin:0;padding:0;box-sizing:border-box;}
+
 body{
-margin:0;
-font-family:Inter;
-background:#0a0a0a;
+font-family:'Inter',sans-serif;
 color:white;
+background:black;
+overflow-x:hidden;
 }
 
-/* HEADER */
-header{
+/* BACKGROUND IMAGE */
+.bg{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:url('https://images.unsplash.com/photo-1520975916090-3105956dac38?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+z-index:-2;
+filter:brightness(0.35) contrast(1.1);
+}
+
+/* DARK OVERLAY */
+.overlay{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:radial-gradient(circle, rgba(0,0,0,0.4), rgba(0,0,0,0.9));
+z-index:-1;
+}
+
+/* INTRO */
+.intro{
+position:fixed;
+width:100%;
+height:100vh;
 display:flex;
-justify-content:space-between;
-padding:20px 40px;
-border-bottom:1px solid rgba(212,175,55,0.2);
+align-items:center;
+justify-content:center;
+background:black;
+z-index:9999;
+animation:fadeOut 2.5s ease forwards;
+animation-delay:2s;
 }
 
-.logo{
+.intro h1{
+font-size:60px;
+letter-spacing:12px;
 color:#d4af37;
-font-weight:700;
-letter-spacing:3px;
+font-family:'Cormorant Garamond',serif;
+animation:zoom 1.2s ease;
 }
 
-/* GRID */
+@keyframes zoom{
+from{transform:scale(0.6);opacity:0;}
+to{transform:scale(1);opacity:1;}
+}
+
+@keyframes fadeOut{
+to{opacity:0;visibility:hidden;}
+}
+
+/* HERO */
+.hero{
+height:100vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
+}
+
+.hero h1{
+font-size:90px;
+letter-spacing:14px;
+color:#d4af37;
+font-family:'Cormorant Garamond',serif;
+text-shadow:0 0 25px rgba(212,175,55,0.2);
+}
+
+.hero p{
+color:#ccc;
+letter-spacing:4px;
+margin-top:10px;
+font-size:14px;
+}
+
+/* SECTION */
 .products{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:20px;
-padding:40px;
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+gap:35px;
+padding:80px;
 }
 
 /* CARD */
 .card{
-background:#111;
-border:1px solid rgba(212,175,55,0.4);
-border-radius:12px;
+background:rgba(255,255,255,0.04);
+backdrop-filter:blur(18px);
+border:1px solid rgba(212,175,55,0.15);
+border-radius:22px;
 overflow:hidden;
-transition:0.3s;
+transition:0.5s;
 }
 
 .card:hover{
-transform:translateY(-5px);
+transform:translateY(-12px) scale(1.02);
 border-color:#d4af37;
+box-shadow:0 10px 40px rgba(0,0,0,0.6);
 }
 
 .card img{
 width:100%;
-height:250px;
+height:320px;
 object-fit:cover;
+transition:0.5s;
+}
+
+.card:hover img{
+transform:scale(1.08);
+filter:brightness(1.1);
 }
 
 .card-content{
-padding:15px;
+padding:18px;
+}
+
+.card h3{
+font-family:'Cormorant Garamond',serif;
+font-size:22px;
+margin-bottom:5px;
 }
 
 .price{
 color:#d4af37;
 font-weight:bold;
+margin-bottom:10px;
 }
 
-/* BUTTON */
 .btn{
 display:block;
-margin-top:10px;
-padding:10px;
-text-align:center;
+padding:12px;
 background:#d4af37;
 color:black;
+text-align:center;
+border-radius:12px;
 text-decoration:none;
-border-radius:8px;
-font-weight:600;
+font-weight:700;
+transition:0.3s;
+}
+
+.btn:hover{
+background:white;
+color:black;
 }
 
 </style>
@@ -86,19 +173,29 @@ font-weight:600;
 
 <body>
 
-<header>
-<div class="logo">KHATT STORE</div>
-</header>
+<!-- BACKGROUND -->
+<div class="bg"></div>
+<div class="overlay"></div>
 
+<!-- INTRO -->
+<div class="intro">
+<h1>KHATT</h1>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+<h1>KHATT</h1>
+<p>LUXURY STREETWEAR EXPERIENCE</p>
+</section>
+
+<!-- PRODUCTS -->
 <div class="products" id="products"></div>
 
 <script type="module">
 
-// Firebase SDK
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-// YOUR FIREBASE CONFIG
 const firebaseConfig = {
   apiKey: "AIzaSyCo89iKfkZzWSxfPgcg6i-3AnUaeD9Qdvk",
   authDomain: "khatt-store-15e5c.firebaseapp.com",
@@ -108,18 +205,16 @@ const firebaseConfig = {
   appId: "1:960409478795:web:aa8491cc9be483991c968e"
 };
 
-// INIT FIREBASE
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// LOAD PRODUCTS
 async function loadProducts(){
 
-const querySnapshot = await getDocs(collection(db, "Products"));
+const snap = await getDocs(collection(db, "Products"));
 
 const container = document.getElementById("products");
 
-querySnapshot.forEach((doc) => {
+snap.forEach(doc => {
 
 let p = doc.data();
 
@@ -129,7 +224,7 @@ container.innerHTML += `
 <div class="card-content">
 <h3>${p.name}</h3>
 <p class="price">${p.price} EGP</p>
-<a class="btn" href="product.html?id=${doc.id}">View Product</a>
+<a class="btn" href="#">BUY NOW</a>
 </div>
 </div>
 `;
