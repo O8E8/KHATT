@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>KHATT CART</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+background:#000;
+color:white;
+font-family:'Inter',sans-serif;
+padding:30px;
+}
+
+h1{
+text-align:center;
+font-size:60px;
+color:#d4af37;
+font-family:'Cormorant Garamond',serif;
+margin-bottom:40px;
+}
+
+.cart-item{
+display:flex;
+align-items:center;
+gap:20px;
+background:rgba(255,255,255,.05);
+border:1px solid rgba(212,175,55,.2);
+padding:15px;
+border-radius:20px;
+margin-bottom:20px;
+}
+
+.cart-item img{
+width:120px;
+height:120px;
+object-fit:cover;
+border-radius:15px;
+}
+
+.info{
+flex:1;
+}
+
+.name{
+font-size:22px;
+margin-bottom:8px;
+}
+
+.price{
+color:#d4af37;
+font-weight:bold;
+}
+
+.remove{
+background:red;
+color:white;
+border:none;
+padding:10px 15px;
+border-radius:10px;
+cursor:pointer;
+}
+
+.total{
+text-align:center;
+font-size:30px;
+margin-top:40px;
+color:#d4af37;
+font-weight:bold;
+}
+
+.checkout{
+display:block;
+max-width:350px;
+margin:30px auto;
+padding:16px;
+text-align:center;
+background:#d4af37;
+color:black;
+text-decoration:none;
+font-weight:bold;
+border-radius:15px;
+}
+
+.empty{
+text-align:center;
+font-size:22px;
+color:#999;
+margin-top:80px;
+}
+
+</style>
+</head>
+<body>
+
+<h1>KHATT CART</h1>
+
+<div id="cartContainer"></div>
+
+<div class="total" id="totalPrice"></div>
+
+<a class="checkout"
+href="https://wa.me/201276136180">
+COMPLETE ORDER
+</a>
+
+<script>
+
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+const container = document.getElementById("cartContainer");
+
+let total = 0;
+
+function renderCart(){
+
+container.innerHTML = "";
+
+total = 0;
+
+if(cart.length === 0){
+
+container.innerHTML = `
+<div class="empty">
+YOUR CART IS EMPTY
+</div>
+`;
+
+document.getElementById("totalPrice").innerHTML = "";
+
+return;
+
+}
+
+cart.forEach((item,index)=>{
+
+total += Number(item.price);
+
+container.innerHTML += `
+<div class="cart-item">
+
+<img src="${item.image}">
+
+<div class="info">
+<div class="name">${item.name}</div>
+<div class="price">${item.price} EGP</div>
+</div>
+
+<button class="remove" onclick="removeItem(${index})">
+DELETE
+</button>
+
+</div>
+`;
+
+});
+
+document.getElementById("totalPrice").innerHTML =
+"TOTAL : " + total + " EGP";
+
+}
+
+function removeItem(index){
+
+cart.splice(index,1);
+
+localStorage.setItem(
+"cart",
+JSON.stringify(cart)
+);
+
+renderCart();
+
+}
+
+renderCart();
+
+</script>
+
+</body>
+  </html>
