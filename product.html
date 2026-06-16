@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>KHATT Product</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+background:#000;
+color:white;
+font-family:'Inter',sans-serif;
+}
+
+.container{
+max-width:1200px;
+margin:auto;
+padding:50px 20px;
+}
+
+.product{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:50px;
+align-items:center;
+}
+
+.image-box img{
+width:100%;
+border-radius:25px;
+}
+
+.info h1{
+font-family:'Cormorant Garamond',serif;
+font-size:60px;
+color:#d4af37;
+margin-bottom:15px;
+}
+
+.price{
+font-size:28px;
+font-weight:bold;
+color:#d4af37;
+margin-bottom:20px;
+}
+
+.desc{
+color:#ccc;
+line-height:1.8;
+margin-bottom:25px;
+}
+
+.sizes{
+display:flex;
+gap:10px;
+margin-bottom:25px;
+flex-wrap:wrap;
+}
+
+.size{
+padding:12px 18px;
+border:1px solid #d4af37;
+cursor:pointer;
+border-radius:12px;
+}
+
+.size.active{
+background:#d4af37;
+color:black;
+}
+
+.btn{
+display:block;
+width:100%;
+padding:15px;
+margin-top:15px;
+border:none;
+border-radius:12px;
+cursor:pointer;
+font-size:16px;
+font-weight:bold;
+}
+
+.cart{
+background:#d4af37;
+color:black;
+}
+
+.buy{
+background:white;
+color:black;
+}
+
+@media(max-width:900px){
+
+.product{
+grid-template-columns:1fr;
+}
+
+.info h1{
+font-size:40px;
+}
+
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<div class="product">
+
+<div class="image-box">
+<img id="productImage">
+</div>
+
+<div class="info">
+
+<h1 id="productName"></h1>
+
+<div class="price" id="productPrice"></div>
+
+<p class="desc" id="productDescription"></p>
+
+<div class="sizes">
+
+<div class="size active">S</div>
+<div class="size">M</div>
+<div class="size">L</div>
+<div class="size">XL</div>
+<div class="size">2XL</div>
+
+</div>
+
+<button class="btn cart" id="addCart">
+ADD TO CART
+</button>
+
+<button class="btn buy">
+BUY NOW
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+apiKey: "AIzaSyCo89iKfkZzWSxfPgcg6i-3AnUaeD9Qdvk",
+authDomain: "khatt-store-15e5c.firebaseapp.com",
+projectId: "khatt-store-15e5c",
+storageBucket: "khatt-store-15e5c.firebasestorage.app",
+messagingSenderId: "960409478795",
+appId: "1:960409478795:web:aa8491cc9be483991c968e"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const params = new URLSearchParams(window.location.search);
+const id = params.get("id");
+
+const productRef = doc(db,"Products",id);
+
+const productSnap = await getDoc(productRef);
+
+if(productSnap.exists()){
+
+const p = productSnap.data();
+
+document.getElementById("productImage").src = p.image;
+document.getElementById("productName").innerText = p.name;
+document.getElementById("productPrice").innerText = p.price + " EGP";
+document.getElementById("productDescription").innerText = p.description;
+
+document.getElementById("addCart").onclick = () => {
+
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+cart.push({
+name:p.name,
+price:p.price,
+image:p.image
+});
+
+localStorage.setItem("cart",JSON.stringify(cart));
+
+alert("Added To Cart");
+
+};
+
+}
+
+document.querySelectorAll(".size").forEach(btn=>{
+
+btn.onclick=()=>{
+
+document.querySelectorAll(".size").forEach(x=>x.classList.remove("active"));
+
+btn.classList.add("active");
+
+};
+
+});
+
+</script>
+
+</body>
+  </html>
