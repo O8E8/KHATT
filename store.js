@@ -8,8 +8,10 @@ box.innerHTML+=`
 <a href="product.html?id=${p.id}">
 <img src="${p.img}">
 </a>
+
 <h3>${p.name}</h3>
 <p>$${p.price}</p>
+
 <button onclick="add(${p.id})">Add to Cart</button>
 </div>
 `;
@@ -27,7 +29,7 @@ update();
 function update(){
 localStorage.setItem("cart",JSON.stringify(cart));
 
-document.getElementById("count").innerText =
+document.getElementById("count").innerText=
 cart.reduce((a,b)=>a+b.qty,0);
 
 let box=document.getElementById("cartItems");
@@ -62,7 +64,7 @@ alert("Fill all fields");
 return;
 }
 
-let msg = "🔥 KHATT NEW ORDER\n\n";
+let msg="🔥 KHATT NEW ORDER\n\n";
 
 cart.forEach(i=>{
 let p=products.find(x=>x.id===i.id);
@@ -71,7 +73,7 @@ msg+=`${p.name} (${i.size}) x${i.qty}\n`;
 
 msg+=`\nName: ${name}\nPhone: ${phone}\nCity: ${city}\nStreet: ${street} ${building}`;
 
-let url = "https://wa.me/201276136180?text=" + encodeURIComponent(msg);
+let url="https://wa.me/201276136180?text="+encodeURIComponent(msg);
 
 window.open(url,"_blank");
 
