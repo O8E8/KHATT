@@ -36,13 +36,11 @@ cursor:pointer;
 transition:.3s;
 }
 
-.card:hover{
-transform:scale(1.03);
-}
+.card:hover{transform:scale(1.03)}
 
 .card img{
 width:100%;
-height:250px;
+height:260px;
 object-fit:cover;
 }
 
@@ -58,11 +56,11 @@ color:#aaa;
 button{
 width:100%;
 padding:10px;
+border:none;
+cursor:pointer;
+font-weight:bold;
 background:white;
 color:black;
-border:none;
-font-weight:bold;
-cursor:pointer;
 }
 
 .cart{
