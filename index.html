@@ -1,320 +1,52 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KHATT STORE</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Cormorant+Garamond:wght@300;400;600&display=swap" rel="stylesheet">
-
-<style>
-
-/* ===== RESET ===== */
-*{margin:0;padding:0;box-sizing:border-box;}
-
-body{
-font-family:'Inter',sans-serif;
-background:black;
-color:white;
-overflow-x:hidden;
-}
-
-/* ===== CINEMATIC BACKGROUND ===== */
-.bg{
-position:fixed;
-width:100%;
-height:100%;
-background:url('https://images.unsplash.com/photo-1520975916090-3105956dac38?auto=format&fit=crop&w=1600&q=80') center/cover;
-filter:brightness(.25) contrast(1.1);
-z-index:-3;
-}
-
-.overlay{
-position:fixed;
-width:100%;
-height:100%;
-background:radial-gradient(circle, rgba(0,0,0,.3), rgba(0,0,0,.95));
-z-index:-2;
-}
-
-/* ===== INTRO ===== */
-.intro{
-position:fixed;
-width:100%;
-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-background:black;
-z-index:9999;
-animation:fade 2.5s ease forwards;
-animation-delay:2s;
-}
-
-.intro h1{
-font-size:70px;
-letter-spacing:15px;
-color:#d4af37;
-font-family:'Cormorant Garamond',serif;
-}
-
-@keyframes fade{
-to{opacity:0;visibility:hidden;}
-}
-
-/* ===== HERO ===== */
-.hero{
-height:100vh;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-text-align:center;
-}
-
-.hero h1{
-font-size:100px;
-color:#d4af37;
-font-family:'Cormorant Garamond',serif;
-letter-spacing:20px;
-text-shadow:0 0 25px rgba(212,175,55,.5);
-}
-
-.hero p{
-color:#aaa;
-letter-spacing:6px;
-margin-top:10px;
-}
-
-/* ===== PRODUCTS ===== */
-.products{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:30px;
-padding:70px;
-}
-
-.card{
-background:rgba(255,255,255,.04);
-border:1px solid rgba(212,175,55,.2);
-border-radius:18px;
-overflow:hidden;
-backdrop-filter:blur(12px);
-transition:.4s;
-}
-
-.card:hover{
-transform:translateY(-10px) scale(1.02);
-border-color:#d4af37;
-}
-
-.card img{
-width:100%;
-height:320px;
-object-fit:cover;
-cursor:pointer;
-transition:.4s;
-}
-
-.card img:hover{
-transform:scale(1.05);
-}
-
-.card-content{
-padding:15px;
-}
-
-.card h3{
-font-family:'Cormorant Garamond',serif;
-font-size:22px;
-}
-
-.price{
-color:#d4af37;
-margin:10px 0;
-font-weight:bold;
-}
-
-/* ===== BUTTONS ===== */
-.btn{
-display:block;
-padding:12px;
-background:#d4af37;
-color:black;
-text-align:center;
-border-radius:12px;
-font-weight:700;
-cursor:pointer;
-margin-top:8px;
-}
-
-.quick{
-background:#111;
-color:#d4af37;
-border:1px solid #d4af37;
-}
-
-/* ===== POPUP ===== */
-.popup,.thankyou{
-position:fixed;
-top:0;left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,.85);
-display:flex;
-justify-content:center;
-align-items:center;
-z-index:9999;
-}
-
-.hidden{display:none;}
-
-.box{
-background:#111;
-padding:30px;
-border-radius:18px;
-border:1px solid #d4af37;
-text-align:center;
-}
-
-.sizes button{
-margin:5px;
-padding:10px 15px;
-background:transparent;
-border:1px solid #d4af37;
-color:white;
-cursor:pointer;
-border-radius:8px;
-}
-
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<!-- INTRO -->
-<div class="intro">
-<h1>KHATT</h1>
-</div>
+<header>
+<div class="logo">KHATT</div>
+<div onclick="toggleCart()">CART (<span id="count">0</span>)</div>
+</header>
 
-<!-- BACKGROUND -->
-<div class="bg"></div>
-<div class="overlay"></div>
-
-<!-- HERO -->
-<div class="hero">
-<h1>KHATT</h1>
-<p>LUXURY STREETWEAR EXPERIENCE</p>
-</div>
-
-<!-- PRODUCTS -->
 <div class="products" id="products"></div>
 
-<!-- POPUP -->
-<div id="popup" class="popup hidden">
+<!-- CART -->
+<div class="cart" id="cart">
+<h3>Your Cart</h3>
+<div id="cartItems"></div>
+
+<button onclick="openCheckout()">BUY NOW</button>
+</div>
+
+<!-- CHECKOUT -->
+<div class="checkout" id="checkout">
 <div class="box">
-<h3>Select Size</h3>
-<div class="sizes">
-<button onclick="chooseSize('S')">S</button>
-<button onclick="chooseSize('M')">M</button>
-<button onclick="chooseSize('L')">L</button>
-<button onclick="chooseSize('XL')">XL</button>
-</div>
-</div>
-</div>
 
-<!-- THANK YOU -->
-<div id="thankyou" class="thankyou hidden">
-<div class="box">
-<h2>🎉 THANK YOU</h2>
-<p id="orderText"></p>
-</div>
-</div>
+<h3>Checkout KHATT</h3>
 
-<script type="module">
+<input id="name" placeholder="Full Name">
+<input id="phone" placeholder="Phone">
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, collection, getDocs, addDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+<select id="city">
+<option>Cairo</option>
+<option>Alexandria</option>
+<option>Other</option>
+</select>
 
-const firebaseConfig = {
-apiKey:"YOUR_KEY",
-authDomain:"YOUR_DOMAIN",
-projectId:"YOUR_ID"
-};
+<input id="street" placeholder="Street">
+<input id="building" placeholder="Building / Floor">
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-let selected=null;
-
-/* LOAD */
-async function load(){
-const snap=await getDocs(collection(db,"Products"));
-const box=document.getElementById("products");
-
-snap.forEach(d=>{
-let p=d.data();
-
-box.innerHTML+=`
-<div class="card">
-
-<a href="product.html?id=${d.id}">
-<img src="${p.image}">
-</a>
-
-<div class="card-content">
-
-<h3>${p.name}</h3>
-<div class="price">${p.price} EGP</div>
-
-<div class="btn quick" onclick="quickBuy('${p.name}','${p.price}')">QUICK BUY</div>
-
-<div class="btn" onclick="openPopup('${p.name}','${p.price}')">BUY NOW</div>
+<button onclick="placeOrder()">CONFIRM ORDER</button>
 
 </div>
+</div>
 
-</div>`;
-});
-}
-load();
-
-/* QUICK BUY */
-window.quickBuy=function(n,p){
-let id="KHATT-"+Math.floor(Math.random()*9999);
-
-addDoc(collection(db,"Orders"),{name:n,price:p,size:"Quick",orderId:id});
-
-window.open(`https://wa.me/201276136180?text=Order ${id} ${n} ${p}`,"_blank");
-}
-
-/* POPUP */
-window.openPopup=function(n,p){
-selected={n,p};
-document.getElementById("popup").classList.remove("hidden");
-}
-
-/* SIZE */
-window.chooseSize=async function(size){
-
-document.getElementById("popup").classList.add("hidden");
-
-let id="KHATT-"+Math.floor(Math.random()*9999);
-
-await addDoc(collection(db,"Orders"),{
-name:selected.n,
-price:selected.p,
-size,
-orderId:id
-});
-
-document.getElementById("orderText").innerText=id;
-document.getElementById("thankyou").classList.remove("hidden");
-
-setTimeout(()=>document.getElementById("thankyou").classList.add("hidden"),2500);
-}
-
-</script>
+<script src="db.js"></script>
+<script src="store.js"></script>
 
 </body>
-                 </html>
+</html>
