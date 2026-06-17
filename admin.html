@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>KHATT ADMIN</title>
+
+<style>
+body{margin:0;font-family:Arial;background:#0b0b0f;color:white;}
+.sidebar{width:220px;height:100vh;position:fixed;background:#111;padding:20px;}
+.main{margin-left:220px;padding:20px;}
+.card{background:#15151c;padding:15px;margin-bottom:10px;border-radius:10px;}
+.badge{color:#d4af37;}
+.btn{background:#d4af37;border:none;padding:6px;cursor:pointer;}
+.toast{position:fixed;bottom:20px;right:20px;background:#d4af37;color:black;padding:10px;display:none;}
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+<h2>KHATT ADMIN</h2>
+</div>
+
+<div class="main">
+<h2>Orders</h2>
+<div id="orders"></div>
+</div>
+
+<div class="toast" id="toast">New Order 🔥</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, onSnapshot, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const app=initializeApp({
+apiKey:"YOUR_KEY",
+projectId:"YOUR_ID"
+});
+
+const db=getFirestore(app);
+
+const box=document.getElementById("orders");
+const toast=document.getElementById("toast");
+
+let first=true;
+
+onSnapshot(collection(db,"Orders"),snap=>{
+
+box.innerHTML="";
+
+snap.forEach(d=>{
+let o=d.data();
+
+box.innerHTML+=`
+<div class="card">
+<div class="badge">${o.orderId}</div>
+<div>${o.name}</div>
+<div>${o.price} EGP</div>
+<div>${o.size}</div>
+<button class="btn" onclick="del('${d.id}')">Delete</button>
+</div>`;
+});
+
+if(!first){
+toast.style.display="block";
+setTimeout(()=>toast.style.display="none",3000);
+}
+first=false;
+
+});
+
+window.del=async function(id){
+await deleteDoc(doc(db,"Orders",id));
+}
+
+</script>
+
+</body>
+</html>
