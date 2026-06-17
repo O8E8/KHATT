@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>KHATT CART</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <style>
 
+/* RESET */
 *{
 margin:0;
 padding:0;
@@ -17,171 +20,231 @@ box-sizing:border-box;
 }
 
 body{
-background:#000;
-color:white;
 font-family:'Inter',sans-serif;
-padding:30px;
+background:black;
+color:white;
+overflow-x:hidden;
 }
 
-h1{
+/* BACKGROUND */
+.bg{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:url('https://images.unsplash.com/photo-1520975916090-3105956dac38?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+filter:brightness(.2);
+z-index:-2;
+}
+
+.overlay{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:radial-gradient(circle, rgba(0,0,0,.4), rgba(0,0,0,.95));
+z-index:-1;
+}
+
+/* TITLE */
+.title{
 text-align:center;
 font-size:60px;
-color:#d4af37;
 font-family:'Cormorant Garamond',serif;
-margin-bottom:40px;
+color:#d4af37;
+margin-top:80px;
+letter-spacing:5px;
 }
 
-.cart-item{
+/* CART CONTAINER */
+.cart-container{
+max-width:900px;
+margin:50px auto;
+padding:20px;
+}
+
+/* ITEM */
+.item{
 display:flex;
-align-items:center;
 gap:20px;
-background:rgba(255,255,255,.05);
-border:1px solid rgba(212,175,55,.2);
+align-items:center;
+background:rgba(255,255,255,.04);
 padding:15px;
-border-radius:20px;
-margin-bottom:20px;
-}
-
-.cart-item img{
-width:120px;
-height:120px;
-object-fit:cover;
 border-radius:15px;
+margin-bottom:15px;
+border:1px solid rgba(212,175,55,.2);
+backdrop-filter:blur(10px);
 }
 
-.info{
-flex:1;
+.item img{
+width:100px;
+height:100px;
+object-fit:cover;
+border-radius:10px;
 }
 
-.name{
-font-size:22px;
-margin-bottom:8px;
+.item h3{
+font-size:20px;
+font-family:'Cormorant Garamond',serif;
 }
 
 .price{
 color:#d4af37;
-font-weight:bold;
+margin-top:5px;
 }
 
+/* REMOVE BUTTON */
 .remove{
-background:red;
-color:white;
-border:none;
-padding:10px 15px;
-border-radius:10px;
-cursor:pointer;
-}
-
-.total{
-text-align:center;
-font-size:30px;
-margin-top:40px;
-color:#d4af37;
-font-weight:bold;
-}
-
-.checkout{
-display:block;
-max-width:350px;
-margin:30px auto;
-padding:16px;
-text-align:center;
+margin-left:auto;
 background:#d4af37;
 color:black;
-text-decoration:none;
-font-weight:bold;
-border-radius:15px;
+padding:8px 12px;
+border-radius:10px;
+cursor:pointer;
+font-weight:700;
+transition:.3s;
 }
 
+.remove:hover{
+background:white;
+}
+
+/* TOTAL */
+.total{
+text-align:center;
+font-size:25px;
+margin-top:30px;
+color:#d4af37;
+}
+
+/* CHECKOUT */
+.checkout{
+display:block;
+width:100%;
+max-width:400px;
+margin:40px auto;
+padding:15px;
+background:#d4af37;
+color:black;
+text-align:center;
+font-weight:700;
+border-radius:12px;
+cursor:pointer;
+text-decoration:none;
+transition:.3s;
+}
+
+.checkout:hover{
+background:white;
+}
+
+/* EMPTY */
 .empty{
 text-align:center;
-font-size:22px;
-color:#999;
 margin-top:80px;
+color:#aaa;
+}
+
+/* BACK */
+.back{
+position:fixed;
+top:20px;
+left:20px;
+background:#d4af37;
+color:black;
+padding:10px 15px;
+border-radius:50px;
+cursor:pointer;
+font-weight:700;
 }
 
 </style>
+
 </head>
+
 <body>
 
-<h1>KHATT CART</h1>
+<div class="bg"></div>
+<div class="overlay"></div>
 
-<div id="cartContainer"></div>
+<div class="back" onclick="history.back()">← BACK</div>
 
-<div class="total" id="totalPrice"></div>
+<div class="title">YOUR CART</div>
 
-<a class="checkout"
-href="https://wa.me/201276136180">
-COMPLETE ORDER
-</a>
+<div class="cart-container" id="cartContainer"></div>
+
+<div class="total" id="total"></div>
+
+<a class="checkout" onclick="checkout()">CHECKOUT VIA WHATSAPP</a>
 
 <script>
 
+/* LOAD CART */
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
 const container = document.getElementById("cartContainer");
-
-let total = 0;
+const totalEl = document.getElementById("total");
 
 function renderCart(){
 
 container.innerHTML = "";
 
-total = 0;
-
 if(cart.length === 0){
-
-container.innerHTML = `
-<div class="empty">
-YOUR CART IS EMPTY
-</div>
-`;
-
-document.getElementById("totalPrice").innerHTML = "";
-
+container.innerHTML = `<div class="empty">Your cart is empty 🛒</div>`;
+totalEl.innerHTML = "";
 return;
-
 }
+
+let total = 0;
 
 cart.forEach((item,index)=>{
 
 total += Number(item.price);
 
 container.innerHTML += `
-<div class="cart-item">
+<div class="item">
 
 <img src="${item.image}">
 
-<div class="info">
-<div class="name">${item.name}</div>
+<div>
+<h3>${item.name}</h3>
 <div class="price">${item.price} EGP</div>
 </div>
 
-<button class="remove" onclick="removeItem(${index})">
-DELETE
-</button>
+<div class="remove" onclick="removeItem(${index})">
+REMOVE
+</div>
 
 </div>
 `;
 
 });
 
-document.getElementById("totalPrice").innerHTML =
-"TOTAL : " + total + " EGP";
-
+totalEl.innerHTML = "TOTAL: " + total + " EGP";
 }
 
 function removeItem(index){
-
 cart.splice(index,1);
-
-localStorage.setItem(
-"cart",
-JSON.stringify(cart)
-);
-
+localStorage.setItem("cart",JSON.stringify(cart));
 renderCart();
+}
 
+function checkout(){
+
+if(cart.length === 0){
+alert("Cart is empty!");
+return;
+}
+
+let message = "Hello KHATT, I want to order:%0A";
+
+cart.forEach(item=>{
+message += `- ${item.name} (${item.price} EGP)%0A`;
+});
+
+window.open("https://wa.me/201276136180?text=" + message,"_blank");
 }
 
 renderCart();
@@ -189,4 +252,5 @@ renderCart();
 </script>
 
 </body>
-  </html>
+
+</html>
