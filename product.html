@@ -1,14 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>KHATT Product</title>
+<title>KHATT PRODUCT</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <style>
+
+/* RESET */
 
 *{
 margin:0;
@@ -17,141 +21,191 @@ box-sizing:border-box;
 }
 
 body{
-background:#000;
-color:white;
 font-family:'Inter',sans-serif;
+background:black;
+color:white;
+overflow-x:hidden;
 }
+
+/* BACKGROUND */
+
+.bg{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:url('https://images.unsplash.com/photo-1520975916090-3105956dac38?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+filter:brightness(.25);
+z-index:-2;
+}
+
+.overlay{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:radial-gradient(circle, rgba(0,0,0,.4), rgba(0,0,0,.95));
+z-index:-1;
+}
+
+/* CONTAINER */
 
 .container{
-max-width:1200px;
-margin:auto;
-padding:50px 20px;
-}
-
-.product{
 display:grid;
 grid-template-columns:1fr 1fr;
 gap:50px;
+padding:120px 80px;
 align-items:center;
 }
 
-.image-box img{
+/* IMAGE */
+
+.product-img{
 width:100%;
-border-radius:25px;
+border-radius:20px;
+overflow:hidden;
 }
 
+.product-img img{
+width:100%;
+height:500px;
+object-fit:cover;
+border-radius:20px;
+}
+
+/* INFO */
+
 .info h1{
-font-family:'Cormorant Garamond',serif;
 font-size:60px;
+font-family:'Cormorant Garamond',serif;
 color:#d4af37;
-margin-bottom:15px;
 }
 
 .price{
-font-size:28px;
-font-weight:bold;
+font-size:25px;
+margin:15px 0;
 color:#d4af37;
-margin-bottom:20px;
 }
 
 .desc{
 color:#ccc;
 line-height:1.8;
-margin-bottom:25px;
+margin-bottom:20px;
 }
+
+/* SIZE */
 
 .sizes{
 display:flex;
 gap:10px;
-margin-bottom:25px;
-flex-wrap:wrap;
+margin:20px 0;
 }
 
 .size{
-padding:12px 18px;
+padding:10px 15px;
 border:1px solid #d4af37;
 cursor:pointer;
-border-radius:12px;
+border-radius:8px;
+transition:.3s;
 }
 
-.size.active{
+.size:hover{
 background:#d4af37;
 color:black;
 }
+
+/* BUTTON */
 
 .btn{
 display:block;
 width:100%;
 padding:15px;
-margin-top:15px;
-border:none;
-border-radius:12px;
-cursor:pointer;
-font-size:16px;
-font-weight:bold;
-}
-
-.cart{
+margin-top:20px;
 background:#d4af37;
 color:black;
+text-align:center;
+font-weight:700;
+border-radius:12px;
+cursor:pointer;
+transition:.3s;
 }
 
-.buy{
+.btn:hover{
 background:white;
-color:black;
 }
+
+/* BACK */
+
+.back{
+position:fixed;
+top:20px;
+left:20px;
+background:#d4af37;
+color:black;
+padding:10px 15px;
+border-radius:50px;
+cursor:pointer;
+font-weight:700;
+}
+
+/* MOBILE */
 
 @media(max-width:900px){
 
-.product{
+.container{
 grid-template-columns:1fr;
+padding:100px 20px;
 }
 
 .info h1{
 font-size:40px;
 }
 
+.product-img img{
+height:350px;
+}
+
 }
 
 </style>
+
 </head>
+
 <body>
+
+<div class="bg"></div>
+<div class="overlay"></div>
+
+<div class="back" onclick="history.back()">← BACK</div>
 
 <div class="container">
 
-<div class="product">
-
-<div class="image-box">
-<img id="productImage">
+<div class="product-img">
+<img id="img" src="">
 </div>
 
 <div class="info">
 
-<h1 id="productName"></h1>
+<h1 id="name">Loading...</h1>
 
-<div class="price" id="productPrice"></div>
+<div class="price" id="price"></div>
 
-<p class="desc" id="productDescription"></p>
+<p class="desc">
+Premium KHATT piece crafted for modern streetwear culture. Minimal design. Maximum presence.
+</p>
 
 <div class="sizes">
 
-<div class="size active">S</div>
+<div class="size">S</div>
 <div class="size">M</div>
 <div class="size">L</div>
 <div class="size">XL</div>
-<div class="size">2XL</div>
 
 </div>
 
-<button class="btn cart" id="addCart">
-ADD TO CART
-</button>
-
-<button class="btn buy">
-BUY NOW
-</button>
-
-</div>
+<div class="btn" onclick="addToCart()">ADD TO CART</div>
 
 </div>
 
@@ -161,6 +215,8 @@ BUY NOW
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+/* FIREBASE */
 
 const firebaseConfig = {
 apiKey: "AIzaSyCo89iKfkZzWSxfPgcg6i-3AnUaeD9Qdvk",
@@ -174,53 +230,55 @@ appId: "1:960409478795:web:aa8491cc9be483991c968e"
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+/* GET ID FROM URL */
+
 const params = new URLSearchParams(window.location.search);
 const id = params.get("id");
 
-const productRef = doc(db,"Products",id);
+let productData = null;
 
-const productSnap = await getDoc(productRef);
+/* LOAD PRODUCT */
 
-if(productSnap.exists()){
+async function loadProduct(){
 
-const p = productSnap.data();
+const snap = await getDoc(doc(db, "Products", id));
 
-document.getElementById("productImage").src = p.image;
-document.getElementById("productName").innerText = p.name;
-document.getElementById("productPrice").innerText = p.price + " EGP";
-document.getElementById("productDescription").innerText = p.description;
+if(snap.exists()){
 
-document.getElementById("addCart").onclick = () => {
+productData = snap.data();
+
+document.getElementById("name").innerText = productData.name;
+document.getElementById("price").innerText = productData.price + " EGP";
+document.getElementById("img").src = productData.image;
+
+}
+
+}
+
+loadProduct();
+
+/* CART */
+
+function addToCart(){
 
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
 cart.push({
-name:p.name,
-price:p.price,
-image:p.image
+name: productData.name,
+price: productData.price,
+image: productData.image
 });
 
-localStorage.setItem("cart",JSON.stringify(cart));
+localStorage.setItem("cart", JSON.stringify(cart));
 
-alert("Added To Cart");
-
-};
+alert("Added to cart 🛒");
 
 }
 
-document.querySelectorAll(".size").forEach(btn=>{
-
-btn.onclick=()=>{
-
-document.querySelectorAll(".size").forEach(x=>x.classList.remove("active"));
-
-btn.classList.add("active");
-
-};
-
-});
+window.addToCart = addToCart;
 
 </script>
 
 </body>
-  </html>
+
+</html>
