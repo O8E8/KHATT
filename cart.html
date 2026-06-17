@@ -54,39 +54,39 @@ text-align:center;
 font-size:60px;
 font-family:'Cormorant Garamond',serif;
 color:#d4af37;
-margin-top:80px;
+margin-top:70px;
 letter-spacing:5px;
 }
 
 /* CART CONTAINER */
 .cart-container{
 max-width:900px;
-margin:50px auto;
+margin:30px auto;
 padding:20px;
 }
 
 /* ITEM */
 .item{
 display:flex;
-gap:20px;
+gap:15px;
 align-items:center;
 background:rgba(255,255,255,.04);
 padding:15px;
 border-radius:15px;
-margin-bottom:15px;
+margin-bottom:12px;
 border:1px solid rgba(212,175,55,.2);
 backdrop-filter:blur(10px);
 }
 
 .item img{
-width:100px;
-height:100px;
+width:90px;
+height:90px;
 object-fit:cover;
 border-radius:10px;
 }
 
 .item h3{
-font-size:20px;
+font-size:18px;
 font-family:'Cormorant Garamond',serif;
 }
 
@@ -95,7 +95,6 @@ color:#d4af37;
 margin-top:5px;
 }
 
-/* REMOVE BUTTON */
 .remove{
 margin-left:auto;
 background:#d4af37;
@@ -104,27 +103,52 @@ padding:8px 12px;
 border-radius:10px;
 cursor:pointer;
 font-weight:700;
-transition:.3s;
-}
-
-.remove:hover{
-background:white;
 }
 
 /* TOTAL */
 .total{
 text-align:center;
-font-size:25px;
-margin-top:30px;
+font-size:22px;
+margin-top:25px;
 color:#d4af37;
 }
 
-/* CHECKOUT */
-.checkout{
+/* CHECKOUT FORM */
+.checkout-form{
+max-width:520px;
+margin:40px auto;
+padding:25px;
+background:rgba(255,255,255,.05);
+border:1px solid rgba(212,175,55,.3);
+border-radius:20px;
+backdrop-filter:blur(15px);
+}
+
+.checkout-form h2{
+text-align:center;
+color:#d4af37;
+margin-bottom:20px;
+font-family:'Cormorant Garamond',serif;
+}
+
+.checkout-form input,
+.checkout-form select{
+width:100%;
+padding:12px;
+margin-bottom:12px;
+border-radius:10px;
+border:1px solid rgba(255,255,255,.2);
+background:transparent;
+color:white;
+outline:none;
+}
+
+/* BUTTON */
+.checkout-btn{
 display:block;
 width:100%;
-max-width:400px;
-margin:40px auto;
+max-width:520px;
+margin:20px auto;
 padding:15px;
 background:#d4af37;
 color:black;
@@ -132,18 +156,17 @@ text-align:center;
 font-weight:700;
 border-radius:12px;
 cursor:pointer;
-text-decoration:none;
 transition:.3s;
 }
 
-.checkout:hover{
+.checkout-btn:hover{
 background:white;
 }
 
 /* EMPTY */
 .empty{
 text-align:center;
-margin-top:80px;
+margin-top:60px;
 color:#aaa;
 }
 
@@ -177,17 +200,39 @@ font-weight:700;
 
 <div class="total" id="total"></div>
 
-<a class="checkout" onclick="checkout()">CHECKOUT VIA WHATSAPP</a>
+<!-- CHECKOUT FORM -->
+<div class="checkout-form">
+
+<h2>CHECKOUT DETAILS</h2>
+
+<input type="text" id="name" placeholder="Full Name">
+<input type="text" id="phone" placeholder="Phone Number">
+
+<select id="gov">
+<option value="">Governorate</option>
+<option>Cairo</option>
+<option>Giza</option>
+<option>Alexandria</option>
+<option>Other</option>
+</select>
+
+<input type="text" id="city" placeholder="City">
+<input type="text" id="street" placeholder="Street / Full Address">
+
+</div>
+
+<div class="checkout-btn" onclick="checkout()">
+CHECKOUT VIA WHATSAPP
+</div>
 
 <script>
 
-/* LOAD CART */
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
 const container = document.getElementById("cartContainer");
 const totalEl = document.getElementById("total");
 
-function renderCart(){
+function render(){
 
 container.innerHTML = "";
 
@@ -228,7 +273,7 @@ totalEl.innerHTML = "TOTAL: " + total + " EGP";
 function removeItem(index){
 cart.splice(index,1);
 localStorage.setItem("cart",JSON.stringify(cart));
-renderCart();
+render();
 }
 
 function checkout(){
@@ -238,16 +283,38 @@ alert("Cart is empty!");
 return;
 }
 
-let message = "Hello KHATT, I want to order:%0A";
+let name = document.getElementById("name").value;
+let phone = document.getElementById("phone").value;
+let gov = document.getElementById("gov").value;
+let city = document.getElementById("city").value;
+let street = document.getElementById("street").value;
+
+if(!name || !phone || !gov || !city || !street){
+alert("Please fill all fields!");
+return;
+}
+
+let message = `🛒 KHATT ORDER:%0A%0A`;
+
+message += `👤 Name: ${name}%0A`;
+message += `📞 Phone: ${phone}%0A`;
+message += `📍 Address: ${gov}, ${city}, ${street}%0A%0A`;
+
+message += `📦 ITEMS:%0A`;
 
 cart.forEach(item=>{
 message += `- ${item.name} (${item.price} EGP)%0A`;
 });
 
+let total = cart.reduce((sum,item)=>sum + Number(item.price),0);
+
+message += `%0A💰 TOTAL: ${total} EGP`;
+
 window.open("https://wa.me/201276136180?text=" + message,"_blank");
+
 }
 
-renderCart();
+render();
 
 </script>
 
