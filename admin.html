@@ -1,52 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>KHATT STORE</title>
+<title>KHATT ADMIN</title>
 <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<header>
-<div class="logo">KHATT</div>
-<div onclick="toggleCart()">CART (<span id="count">0</span>)</div>
-</header>
+<h1>KHATT DASHBOARD</h1>
 
-<div class="products" id="products"></div>
+<input id="name" placeholder="Name">
+<input id="price" placeholder="Price">
+<input id="img" placeholder="Image URL">
 
-<!-- CART -->
-<div class="cart" id="cart">
-<h3>Cart</h3>
-<div id="cartItems"></div>
+<button onclick="add()">Add Product</button>
 
-<button onclick="openCheckout()">BUY NOW</button>
-</div>
-
-<!-- CHECKOUT -->
-<div class="checkout" id="checkout">
-<div class="box">
-
-<h3>Checkout KHATT</h3>
-
-<input id="name" placeholder="Full Name">
-<input id="phone" placeholder="Phone">
-
-<select id="city">
-<option>Cairo</option>
-<option>Alexandria</option>
-<option>Other</option>
-</select>
-
-<input id="street" placeholder="Street">
-<input id="building" placeholder="Building / Floor">
-
-<button onclick="placeOrder()">CONFIRM ORDER</button>
-
-</div>
-</div>
+<div id="list"></div>
 
 <script src="db.js"></script>
-<script src="store.js"></script>
+<script src="admin.js"></script>
 
 </body>
 </html>
