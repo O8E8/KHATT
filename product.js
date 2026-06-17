@@ -3,9 +3,10 @@ let id=new URLSearchParams(window.location.search).get("id");
 let p=products.find(x=>x.id==id);
 
 document.getElementById("product").innerHTML=`
-<div class="card">
+<div class="box">
 
-<img src="${p.img}">
+<img src="${p.img}" style="width:100%;border-radius:10px">
+
 <h1>${p.name}</h1>
 <p>${p.desc}</p>
 <h2>$${p.price}</h2>
