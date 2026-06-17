@@ -8,20 +8,11 @@
 
 <title>KHATT STORE</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
 
-/* RESET */
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-scroll-behavior:smooth;
-}
-
-/* BODY */
+*{margin:0;padding:0;box-sizing:border-box;}
 
 body{
 font-family:'Inter',sans-serif;
@@ -30,453 +21,190 @@ color:white;
 overflow-x:hidden;
 }
 
-/* SCROLLBAR */
-
-::-webkit-scrollbar{
-width:8px;
-}
-
-::-webkit-scrollbar-thumb{
-background:#d4af37;
-border-radius:20px;
-}
-
-/* BACKGROUND */
-
 .bg{
 position:fixed;
-top:0;
-left:0;
 width:100%;
 height:100%;
-background:url('https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=1800&q=80') center center/cover no-repeat;
+background:url('https://images.unsplash.com/photo-1520975916090-3105956dac38?auto=format&fit=crop&w=1600&q=80') center/cover;
+filter:brightness(.3);
 z-index:-2;
-filter:brightness(.25);
 }
 
 .overlay{
 position:fixed;
-top:0;
-left:0;
 width:100%;
 height:100%;
-background:linear-gradient(
-180deg,
-rgba(0,0,0,.2),
-rgba(0,0,0,.7),
-rgba(0,0,0,.95)
-);
+background:radial-gradient(circle, rgba(0,0,0,.4), rgba(0,0,0,.9));
 z-index:-1;
 }
 
-/* INTRO */
-
-.intro{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-background:black;
-z-index:99999;
-animation:introFade 2.5s forwards;
-animation-delay:2s;
-}
-
-.intro h1{
-font-size:80px;
-letter-spacing:15px;
-color:#d4af37;
-font-family:'Cormorant Garamond',serif;
-}
-
-@keyframes introFade{
-
-to{
-opacity:0;
-visibility:hidden;
-}
-
-}
-
-/* HERO */
-
 .hero{
-height:100vh;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
 text-align:center;
-padding:20px;
+padding:120px 20px;
 }
 
 .hero h1{
-font-size:110px;
-letter-spacing:15px;
+font-size:90px;
+color:#d4af37;
 font-family:'Cormorant Garamond',serif;
-color:#d4af37;
-text-shadow:0 0 40px rgba(212,175,55,.3);
 }
-
-.hero p{
-margin-top:15px;
-letter-spacing:5px;
-color:#cccccc;
-font-size:14px;
-}
-
-.hero-buttons{
-display:flex;
-gap:15px;
-margin-top:35px;
-flex-wrap:wrap;
-justify-content:center;
-}
-
-.hero-btn{
-background:#d4af37;
-color:black;
-padding:15px 35px;
-border-radius:50px;
-text-decoration:none;
-font-weight:700;
-transition:.4s;
-}
-
-.hero-btn:hover{
-transform:translateY(-5px);
-background:white;
-}
-
-.hero-btn-outline{
-border:1px solid #d4af37;
-color:#d4af37;
-padding:15px 35px;
-border-radius:50px;
-text-decoration:none;
-font-weight:700;
-transition:.4s;
-}
-
-.hero-btn-outline:hover{
-background:#d4af37;
-color:black;
-}
-  /* ABOUT */
-
-.about{
-padding:120px 25px;
-text-align:center;
-max-width:900px;
-margin:auto;
-}
-
-.about h2{
-font-size:50px;
-font-family:'Cormorant Garamond',serif;
-color:#d4af37;
-margin-bottom:25px;
-letter-spacing:4px;
-}
-
-.about p{
-font-size:18px;
-line-height:2;
-color:#cfcfcf;
-}
-
-/* SECTION TITLE */
-
-.section-title{
-text-align:center;
-font-size:55px;
-font-family:'Cormorant Garamond',serif;
-color:#d4af37;
-margin-bottom:60px;
-letter-spacing:5px;
-}
-
-/* PRODUCTS */
 
 .products{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-gap:35px;
-padding:0 60px 100px;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:25px;
+padding:60px;
 }
-
-/* CARD */
 
 .card{
-background:rgba(255,255,255,.04);
-backdrop-filter:blur(20px);
-border:1px solid rgba(212,175,55,.15);
-border-radius:25px;
+background:rgba(255,255,255,.05);
+border:1px solid rgba(212,175,55,.2);
+border-radius:20px;
 overflow:hidden;
-transition:.4s;
-}
-
-.card:hover{
-transform:translateY(-10px);
-border-color:#d4af37;
-box-shadow:0 20px 40px rgba(0,0,0,.3);
+backdrop-filter:blur(10px);
 }
 
 .card img{
 width:100%;
-height:360px;
+height:280px;
 object-fit:cover;
+cursor:pointer;
 }
 
 .card-content{
-padding:20px;
+padding:15px;
 }
 
-.card h3{
-font-size:28px;
-font-family:'Cormorant Garamond',serif;
-margin-bottom:10px;
-}
-
-.price{
-color:#d4af37;
-font-weight:700;
-font-size:18px;
-margin-bottom:15px;
-}
+.price{color:#d4af37;margin:10px 0;}
 
 .btn{
 display:block;
-width:100%;
-padding:14px;
+padding:12px;
 margin-top:10px;
-border-radius:12px;
+text-align:center;
 background:#d4af37;
 color:black;
-text-decoration:none;
-text-align:center;
-font-weight:700;
+border-radius:10px;
 cursor:pointer;
-transition:.3s;
-}
-
-.btn:hover{
-background:white;
-}
-
-/* CART */
-
-#cartIcon{
-position:fixed;
-top:20px;
-right:20px;
-background:#d4af37;
-color:black;
-padding:12px 18px;
-border-radius:50px;
 font-weight:700;
-cursor:pointer;
-z-index:9999;
-box-shadow:0 10px 25px rgba(0,0,0,.3);
 }
 
-/* FOOTER */
-
-footer{
-margin-top:100px;
-padding:70px 20px;
-text-align:center;
-background:rgba(0,0,0,.6);
-border-top:1px solid rgba(212,175,55,.15);
-}
-
-footer h2{
-font-size:45px;
-font-family:'Cormorant Garamond',serif;
+.quick{
+background:#111;
 color:#d4af37;
+border:1px solid #d4af37;
 }
 
-footer p{
-color:#aaa;
-margin-top:10px;
-}
-
-.footer-links{
-margin-top:25px;
+.popup, .thankyou{
+position:fixed;
+top:0;left:0;
+width:100%;height:100%;
+background:rgba(0,0,0,.8);
 display:flex;
 justify-content:center;
-gap:25px;
-flex-wrap:wrap;
+align-items:center;
+z-index:9999;
 }
 
-.footer-links a{
-color:#d4af37;
-text-decoration:none;
-font-weight:600;
+.hidden{display:none;}
+
+.popup-box, .thank-box{
+background:#111;
+padding:30px;
+border-radius:20px;
+text-align:center;
+border:1px solid #d4af37;
 }
 
-.copy{
-margin-top:30px;
-font-size:13px;
-}
-
-/* MOBILE */
-
-@media(max-width:768px){
-
-.hero h1{
-font-size:70px;
-}
-
-.section-title{
-font-size:40px;
-}
-
-.products{
-padding:0 20px 80px;
-}
-
-.card img{
-height:300px;
-}
-
+.sizes button{
+margin:5px;
+padding:10px 15px;
+background:transparent;
+border:1px solid #d4af37;
+color:white;
+cursor:pointer;
 }
 
 </style>
+
 </head>
+
 <body>
 
 <div class="bg"></div>
 <div class="overlay"></div>
 
-<!-- INTRO -->
-<div class="intro">
+<div class="hero">
 <h1>KHATT</h1>
 </div>
-
-<!-- HERO -->
-<section class="hero">
-
-<h1>KHATT</h1>
-
-<p>LUXURY STREETWEAR EXPERIENCE</p>
-
-<div class="hero-buttons">
-
-<a href="#products" class="hero-btn">SHOP NOW</a>
-<a href="https://www.instagram.com/khatt_egy" target="_blank" class="hero-btn-outline">INSTAGRAM</a>
-
-</div>
-
-</section>
-
-<!-- ABOUT -->
-<section class="about">
-
-<h2>THE FIRST DROP</h2>
-
-<p>
-Minimal. Premium. Timeless.<br><br>
-KHATT isn't just clothing — it's a statement.<br>
-Designed for those who move differently.
-</p>
-
-</section>
-
-<!-- CART -->
-<div id="cartIcon">
-🛒 <span id="cartCount">0</span>
-</div>
-
-<!-- PRODUCTS -->
-<section id="products">
-
-<h2 class="section-title">FEATURED PRODUCTS</h2>
 
 <div class="products" id="products"></div>
 
-</section>
+<!-- POPUP SIZE -->
+<div id="popup" class="popup hidden">
+<div class="popup-box">
+<h2>Select Size</h2>
+
+<div class="sizes">
+<button onclick="chooseSize('S')">S</button>
+<button onclick="chooseSize('M')">M</button>
+<button onclick="chooseSize('L')">L</button>
+<button onclick="chooseSize('XL')">XL</button>
+</div>
+
+</div>
+</div>
+
+<!-- THANK YOU -->
+<div id="thankyou" class="thankyou hidden">
+<div class="thank-box">
+<h1>🎉 THANK YOU</h1>
+<p>Your order has been sent successfully</p>
+</div>
+</div>
+
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-/* FIREBASE CONFIG */
-
 const firebaseConfig = {
-apiKey: "AIzaSyCo89iKfkZzWSxfPgcg6i-3AnUaeD9Qdvk",
-authDomain: "khatt-store-15e5c.firebaseapp.com",
-projectId: "khatt-store-15e5c",
-storageBucket: "khatt-store-15e5c.firebasestorage.app",
-messagingSenderId: "960409478795",
-appId: "1:960409478795:web:aa8491cc9be483991c968e"
+apiKey:"AIzaSyCo89iKfkZzWSxfPgcg6i-3AnUaeD9Qdvk",
+authDomain:"khatt-store-15e5c.firebaseapp.com",
+projectId:"khatt-store-15e5c"
 };
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-/* CART */
-
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-function updateCartCount(){
-document.getElementById("cartCount").innerText = cart.length;
-}
-
-updateCartCount();
-
-/* ADD TO CART */
-
-window.addToCart = function(name, price, image){
-
-cart.push({name, price, image});
-localStorage.setItem("cart", JSON.stringify(cart));
-updateCartCount();
-
-}
-
-/* OPEN CART */
-
-document.getElementById("cartIcon").onclick = function(){
-window.location.href = "cart.html";
-};
+let selectedProduct = null;
 
 /* LOAD PRODUCTS */
 
-async function loadProducts(){
+async function load(){
 
-const snap = await getDocs(collection(db, "Products"));
-
+const snap = await getDocs(collection(db,"Products"));
 const container = document.getElementById("products");
 
-container.innerHTML = "";
-
-snap.forEach(doc => {
+snap.forEach(doc=>{
 
 let p = doc.data();
 
 container.innerHTML += `
 <div class="card">
 
+<a href="product.html?id=${doc.id}">
 <img src="${p.image}">
+</a>
 
 <div class="card-content">
 
 <h3>${p.name}</h3>
+<div class="price">${p.price} EGP</div>
 
-<p class="price">${p.price} EGP</p>
+<div class="btn quick" onclick='quickBuy("${p.name}","${p.price}")'>QUICK BUY</div>
 
-<div class="btn" onclick="addToCart('${p.name}','${p.price}','${p.image}')">
-ADD TO CART
-</div>
-
-<a class="btn" href="product.html?id=${doc.id}">
-BUY NOW
-</a>
+<div class="btn" onclick='openPopup("${p.name}","${p.price}")'>BUY NOW</div>
 
 </div>
 
@@ -487,9 +215,55 @@ BUY NOW
 
 }
 
-loadProducts();
+load();
+
+/* QUICK BUY */
+
+window.quickBuy = function(name,price){
+
+let msg =
+`🛒 KHATT QUICK ORDER%0A`+
+`Product: ${name}%0A`+
+`Price: ${price} EGP`;
+
+window.open("https://wa.me/201276136180?text="+msg,"_blank");
+
+}
+
+/* BUY NOW */
+
+window.openPopup = function(name,price){
+
+selectedProduct = {name,price};
+
+document.getElementById("popup").classList.remove("hidden");
+
+}
+
+/* SIZE */
+
+window.chooseSize = function(size){
+
+document.getElementById("popup").classList.add("hidden");
+
+let msg =
+`🛒 KHATT ORDER%0A%0A`+
+`Product: ${selectedProduct.name}%0A`+
+`Price: ${selectedProduct.price} EGP%0A`+
+`Size: ${size}`;
+
+window.open("https://wa.me/201276136180?text="+msg,"_blank");
+
+document.getElementById("thankyou").classList.remove("hidden");
+
+setTimeout(()=>{
+document.getElementById("thankyou").classList.add("hidden");
+},2000);
+
+}
 
 </script>
 
 </body>
+
 </html>
