@@ -3,7 +3,7 @@ let products = JSON.parse(localStorage.getItem("products")) || [
 id:1,
 name:"KHATT BLACK TEE",
 price:15,
-img:"https://picsum.photos/500/500?1",
+img:"https://picsum.photos/600?1",
 desc:"Premium streetwear oversized tee",
 sizes:["S","M","L","XL","XXL"]
 },
@@ -11,8 +11,8 @@ sizes:["S","M","L","XL","XXL"]
 id:2,
 name:"KHATT HOODIE",
 price:35,
-img:"https://picsum.photos/500/500?2",
-desc:"Heavy oversized hoodie",
+img:"https://picsum.photos/600?2",
+desc:"Heavy oversized hoodie streetwear",
 sizes:["S","M","L","XL","XXL"]
 }
 ];
